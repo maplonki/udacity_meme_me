@@ -60,9 +60,20 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         topTextField.delegate = self
         bottomTextField.delegate = self
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         subscribeToKeyboardNotifications("keyboardWillShow:", name: UIKeyboardWillShowNotification)
         subscribeToKeyboardNotifications("keyboardWillHide:", name: UIKeyboardWillHideNotification)
         
+        if let topText = memeModel.topText {
+            topTextField.text = topText
+        }
+        
+        if let bottomText = memeModel.bottomText {
+            bottomTextField.text = bottomText
+        }
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -87,6 +98,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func sharePressed(sender: AnyObject) {
         memeModel.topText = topTextField.text
         memeModel.bottomText = bottomTextField.text
+        memeModel.image = generateMemedImage()
         
         let activityController = UIActivityViewController(activityItems: [memeModel.image], applicationActivities: nil)
         presentViewController(activityController, animated: true, completion: nil)
@@ -97,7 +109,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             memeImageView.image = image
-            memeModel.image = generateMemedImage()
             tabbarShare.enabled = true
         }
         
@@ -130,7 +141,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         
         //We set the mode to graphics in the root view
         UIGraphicsBeginImageContext(self.view.frame.size)
-        
         //We draw all of the childs from the view
         view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
         
