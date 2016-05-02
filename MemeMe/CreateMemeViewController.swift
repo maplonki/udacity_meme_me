@@ -21,12 +21,13 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
+    
     struct Meme {
         var topText: String!
         var bottomText: String!
         var image: UIImage!
+        var originalImage: UIImage!
     }
-    
     
     var memeModel: Meme!
     
@@ -63,8 +64,8 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     override func viewWillAppear(animated: Bool) {
-        subscribeToKeyboardNotifications("keyboardWillShow:", name: UIKeyboardWillShowNotification)
-        subscribeToKeyboardNotifications("keyboardWillHide:", name: UIKeyboardWillHideNotification)
+        subscribeToKeyboardNotifications(#selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification)
+        subscribeToKeyboardNotifications(#selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification)
         
         if let topText = memeModel.topText {
             topTextField.text = topText
@@ -81,11 +82,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         subscribeFromKeyboardNotifications(UIKeyboardWillHideNotification)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     //MARK: - IBActions
     @IBAction func cameraPressed(sender: AnyObject) {
         launchChooserForSource(.Camera)
@@ -96,11 +92,20 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func sharePressed(sender: AnyObject) {
-        memeModel.topText = topTextField.text
-        memeModel.bottomText = bottomTextField.text
-        memeModel.image = generateMemedImage()
-        
+        saveMeme()
         let activityController = UIActivityViewController(activityItems: [memeModel.image], applicationActivities: nil)
+        activityController.completionWithItemsHandler = {(activtyType, completed, returnedItems, activityError) in
+            if completed {
+                let alertController = UIAlertController(title:"Meme Shared", message: "Your meme has been shared.", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                //If the share its cancelled we empty the model
+                self.memeModel = Meme()
+            }
+            
+        }
         presentViewController(activityController, animated: true, completion: nil)
     }
     
@@ -153,6 +158,13 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         bottomToolbar.hidden = false
         
         return memedImage
+    }
+    
+    func saveMeme() {
+        memeModel.topText = topTextField.text
+        memeModel.bottomText = bottomTextField.text
+        memeModel.originalImage = memeImageView.image
+        memeModel.image = generateMemedImage()
     }
     
     //MARK: - Keyboard Notification callbacks
