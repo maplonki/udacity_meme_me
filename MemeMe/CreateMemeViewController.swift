@@ -22,21 +22,14 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
-    struct Meme {
-        var topText: String!
-        var bottomText: String!
-        var image: UIImage!
-        var originalImage: UIImage!
-    }
-    
-    var memeModel: Meme!
+    var memeModel: MemeModel!
     
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        memeModel = Meme()
+        memeModel = MemeModel()
         
         if !UIImagePickerController.isSourceTypeAvailable(.Camera) {
             tabbarCamera.enabled = false
@@ -74,7 +67,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         if let bottomText = memeModel.bottomText {
             bottomTextField.text = bottomText
         }
-
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -97,16 +90,23 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         activityController.completionWithItemsHandler = {(activtyType, completed, returnedItems, activityError) in
             if completed {
                 let alertController = UIAlertController(title:"Meme Shared", message: "Your meme has been shared.", preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler:
+                    {(action: UIAlertAction!) in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 //If the share its cancelled we empty the model
-                self.memeModel = Meme()
+                self.memeModel = MemeModel()
             }
             
         }
         presentViewController(activityController, animated: true, completion: nil)
+    }
+    
+    @IBAction func cancelPressed(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     //MARK: - UIImagePickerControllerDelegate
@@ -165,6 +165,9 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         memeModel.bottomText = bottomTextField.text
         memeModel.originalImage = memeImageView.image
         memeModel.image = generateMemedImage()
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.memes.append(memeModel)
     }
     
     //MARK: - Keyboard Notification callbacks
