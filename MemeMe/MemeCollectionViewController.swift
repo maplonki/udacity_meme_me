@@ -15,23 +15,37 @@ class MemeCollectionViewController: UICollectionViewController {
     //MARK: IBOutlets
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
-    //MARK: Navigation
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
-        
-        let spacing: CGFloat = 3.0
-        //We set size to 3 columns, dividing the parent's width
-        //and multiplying for 2 sides the spacing
-        let cellSize = (self.view.frame.width - (2 * spacing)) / 3.0
-        collectionViewFlowLayout.minimumLineSpacing = spacing
-        collectionViewFlowLayout.minimumInteritemSpacing = spacing
-        collectionViewFlowLayout.itemSize = CGSizeMake(cellSize, cellSize)
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
         collectionView?.reloadData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        let spacing: CGFloat = 2.0
+        //We set size to 3 columns, dividing the parent's width
+        //and multiplying for 2 sides the spacing
+        
+        let cellSize: CGFloat!
+        if UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation) {
+            cellSize = (self.view.frame.height - (2 * spacing)) / 3.0
+        } else {
+         cellSize = (self.view.frame.width - (2 * spacing)) / 3.0
+        }
+        collectionViewFlowLayout.minimumLineSpacing = spacing
+        collectionViewFlowLayout.minimumInteritemSpacing = spacing
+        collectionViewFlowLayout.itemSize = CGSizeMake(cellSize, cellSize)
+        
+        collectionViewFlowLayout.invalidateLayout()
     }
     
     //MARK: Selectors
