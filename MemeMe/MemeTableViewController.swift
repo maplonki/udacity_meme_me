@@ -19,6 +19,7 @@ class MemeTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.navigationItem.title = "Sent Memes"
         sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
         tableView.reloadData()
     }
