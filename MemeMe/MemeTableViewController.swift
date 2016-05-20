@@ -37,10 +37,10 @@ class MemeTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let tableCell:UITableViewCell! = tableView.dequeueReusableCellWithIdentifier("memeTableViewCell")
+        let tableCell:MemeTableViewControllerCell! = tableView.dequeueReusableCellWithIdentifier("memeTableViewCell") as! MemeTableViewControllerCell
         let meme = sentMemes[indexPath.row]
-        tableCell.textLabel?.text = meme.topText + meme.bottomText
-        tableCell.imageView?.image = meme.originalImage
+        tableCell.memeCellImage.image = meme.image
+        tableCell.memeCellLabel.text = "\(meme.topText) \(meme.bottomText)"
         return tableCell
     }
     
@@ -49,6 +49,7 @@ class MemeTableViewController: UITableViewController {
         let meme = sentMemes[indexPath.row] as MemeModel
         performSegueWithIdentifier("detailSegue", sender: meme)
     }
+    
     
     //MARK: Navigation Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
