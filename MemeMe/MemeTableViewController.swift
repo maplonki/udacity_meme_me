@@ -15,21 +15,22 @@ class MemeTableViewController: UITableViewController {
     //MARK: Navigation
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
+        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationItem.title = "Sent Memes"
-        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-        tableView.reloadData()
+        super.viewWillAppear(animated)
+        navigationItem.title = "Sent Memes"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
+        
+        if let tableView = tableView {
+            tableView.reloadData()
+        }
     }
     
     //MARK: Selectors
     func createMemePressed(sender: AnyObject?) {
-        if let storyboard = self.storyboard {
-            let createVC = storyboard.instantiateViewControllerWithIdentifier("CreateMemeViewController")
-            presentViewController(createVC, animated: true, completion: nil)
-        }
+        performSegueWithIdentifier("createSegue", sender: nil)
     }
     
     //MARK: UITableViewDataSource
@@ -57,6 +58,11 @@ class MemeTableViewController: UITableViewController {
         if segue.identifier == "detailSegue" {
             let detailVC = segue.destinationViewController as! MemeDetailViewController
             detailVC.detailImage = (sender as! MemeModel).image
+        } else if segue.identifier == "createSegue" {
+            if let storyboard = storyboard {
+                let createVC = storyboard.instantiateViewControllerWithIdentifier("CreateMemeViewController")
+                presentViewController(createVC, animated: true, completion: nil)
+            }
         }
     }
 }

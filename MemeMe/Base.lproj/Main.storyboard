@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IEW-z7-7Ni">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IEW-z7-7Ni">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -105,7 +105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1469" y="-108"/>
+            <point key="canvasLocation" x="-545" y="-7"/>
         </scene>
         <!--Meme Detail View Controller-->
         <scene sceneID="SBT-kb-tCx">
@@ -137,27 +137,27 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dhk-7f-maR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1457" y="626"/>
+            <point key="canvasLocation" x="-545" y="877"/>
         </scene>
-        <!--Sent Memes-->
+        <!--Tab Bar Controller-->
         <scene sceneID="lTM-69-XFu">
             <objects>
-                <tabBarController title="Sent Memes" id="IEW-z7-7Ni" sceneMemberID="viewController">
+                <tabBarController id="IEW-z7-7Ni" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="c1z-Fg-Klw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="96E-fF-Dzj" kind="relationship" relationship="viewControllers" id="f7P-Qp-91F"/>
-                        <segue destination="DTo-ar-WQN" kind="relationship" relationship="viewControllers" id="EwV-KI-j1g"/>
+                        <segue destination="96E-fF-Dzj" kind="relationship" relationship="viewControllers" id="i4n-Su-8R6"/>
+                        <segue destination="DTo-ar-WQN" kind="relationship" relationship="viewControllers" id="U40-ye-3Pw"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H0w-Cv-IFQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-918" y="466"/>
+            <point key="canvasLocation" x="-2664" y="330"/>
         </scene>
-        <!--Meme Table View Controller-->
+        <!--Item-->
         <scene sceneID="Ys3-py-7e6">
             <objects>
                 <tableViewController id="SzZ-vx-ZmW" customClass="MemeTableViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
@@ -208,14 +208,16 @@
                             <outlet property="delegate" destination="SzZ-vx-ZmW" id="8S1-fH-3S1"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="Item" id="LL1-jb-n1L"/>
                     <navigationItem key="navigationItem" id="0xM-BX-Zux"/>
                     <connections>
                         <segue destination="JK2-bR-PBT" kind="show" identifier="detailSegue" id="cgt-md-RHd"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="createSegue" id="yM4-1C-y3M"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7eU-Vk-7Jr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="69"/>
+            <point key="canvasLocation" x="-1262" y="-7"/>
         </scene>
         <!--Meme Collection View Controller-->
         <scene sceneID="Otw-Bt-X9f">
@@ -266,16 +268,17 @@
                     <connections>
                         <outlet property="collectionViewFlowLayout" destination="TYE-pq-mGo" id="qrN-ak-TXh"/>
                         <segue destination="JK2-bR-PBT" kind="show" identifier="detailSegue" id="GBw-OU-7OH"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="createSegue" id="woB-nL-YIG"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="70H-rq-SNZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="682" y="743"/>
+            <point key="canvasLocation" x="-1262" y="727"/>
         </scene>
-        <!--Table Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="kFN-om-sTi">
             <objects>
-                <navigationController title="Table Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="96E-fF-Dzj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="96E-fF-Dzj" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" image="table" id="H17-NN-ofd"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="kGs-KT-9QQ">
@@ -289,12 +292,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBd-T9-d5x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-96" y="69"/>
+            <point key="canvasLocation" x="-1946" y="-7"/>
         </scene>
-        <!--Collection Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="YbE-YD-sRz">
             <objects>
-                <navigationController title="Collection Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="DTo-ar-WQN" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DTo-ar-WQN" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="collection" id="xmt-f0-HJi"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zan-OP-XUe">
@@ -308,7 +311,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QtJ-BJ-27i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-130" y="743"/>
+            <point key="canvasLocation" x="-1946" y="727"/>
         </scene>
     </scenes>
     <resources>
@@ -316,6 +319,7 @@
         <image name="table" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cgt-md-RHd"/>
+        <segue reference="GBw-OU-7OH"/>
+        <segue reference="yM4-1C-y3M"/>
     </inferredMetricsTieBreakers>
 </document>

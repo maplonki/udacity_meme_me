@@ -18,16 +18,19 @@ class MemeCollectionViewController: UICollectionViewController {
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
+        
+        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationItem.title = "Sent Memes"
+        navigationItem.title = "Sent Memes"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
         
-        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-        collectionView?.reloadData()
+        if let collectionView = collectionView {
+            collectionView.reloadData()
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -39,23 +42,18 @@ class MemeCollectionViewController: UICollectionViewController {
         
         let cellSize: CGFloat!
         if UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation) {
-            cellSize = (self.view.frame.height - (2 * spacing)) / 3.0
+            cellSize = (view.frame.height - (2 * spacing)) / 3.0
         } else {
-         cellSize = (self.view.frame.width - (2 * spacing)) / 3.0
+         cellSize = (view.frame.width - (2 * spacing)) / 3.0
         }
         collectionViewFlowLayout.minimumLineSpacing = spacing
         collectionViewFlowLayout.minimumInteritemSpacing = spacing
         collectionViewFlowLayout.itemSize = CGSizeMake(cellSize, cellSize)
-        
-        collectionViewFlowLayout.invalidateLayout()
     }
     
     //MARK: Selectors
     func createMemePressed(sender: AnyObject?) {
-        if let storyboard = self.storyboard {
-            let createVC = storyboard.instantiateViewControllerWithIdentifier("CreateMemeViewController")
-            presentViewController(createVC, animated: true, completion: nil)
-        }
+        performSegueWithIdentifier("createSegue", sender: nil)
     }
     
     //MARK: UICOllectionViewDataSource
@@ -82,6 +80,11 @@ class MemeCollectionViewController: UICollectionViewController {
         if segue.identifier == "detailSegue" {
             let detailVC = segue.destinationViewController as! MemeDetailViewController
             detailVC.detailImage = (sender as! MemeModel).image
+        } else if segue.identifier == "createSegue" {
+            if let storyboard = storyboard {
+                let createVC = storyboard.instantiateViewControllerWithIdentifier("CreateMemeViewController")
+                presentViewController(createVC, animated: true, completion: nil)
+            }
         }
     }
 }
