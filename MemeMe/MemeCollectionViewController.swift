@@ -12,6 +12,9 @@ class MemeCollectionViewController: UICollectionViewController {
     
     var sentMemes: [MemeModel]!
     
+    var navigationEditItem: UIBarButtonItem!
+    var navigationCancelItem: UIBarButtonItem!
+    
     //MARK: IBOutlets
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
@@ -21,8 +24,13 @@ class MemeCollectionViewController: UICollectionViewController {
         
         sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
         
+        navigationEditItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(editMemePressed(_:)))
+        navigationCancelItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancelEditMemePressed(_:)))
+        
+        
         navigationItem.title = "Sent Memes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
+        navigationItem.leftBarButtonItem  = navigationEditItem
         
         if let collectionView = collectionView {
             collectionView.reloadData()
@@ -52,6 +60,22 @@ class MemeCollectionViewController: UICollectionViewController {
         performSegueWithIdentifier("createSegue", sender: nil)
     }
     
+    func editMemePressed(sender: AnyObject?) {
+        setEditing(true, animated: true)
+        navigationItem.leftBarButtonItem = navigationCancelItem
+    }
+    
+    func cancelEditMemePressed(sender: AnyObject?) {
+        setEditing(false, animated: true)
+        navigationItem.leftBarButtonItem = navigationEditItem
+    }
+    
+    func deleteMemeAtRow(indexPath: NSIndexPath) {
+        sentMemes.removeAtIndex(indexPath.row)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.removeAtIndex(indexPath.row)
+        collectionView?.deleteItemsAtIndexPaths([indexPath])
+    }
+    
     //MARK: UICOllectionViewDataSource
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sentMemes.count
@@ -68,7 +92,15 @@ class MemeCollectionViewController: UICollectionViewController {
     //MARK: UICOllectionViewDelegate
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let meme = sentMemes[indexPath.row] as MemeModel
-        performSegueWithIdentifier("detailSegue", sender: meme)
+        if !editing {
+            performSegueWithIdentifier("detailSegue", sender: meme)
+        } else {
+            let cell = self.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! MemeCollectionViewCell
+            cell.cellImage?.backgroundColor = UIColor.redColor()
+            deleteMemeAtRow(indexPath)
+        }
+        
+        
     }
     
     //MARK: Navigation Segue
