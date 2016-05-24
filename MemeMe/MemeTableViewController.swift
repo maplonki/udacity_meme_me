@@ -12,14 +12,11 @@ class MemeTableViewController: UITableViewController {
     
     var sentMemes: [MemeModel]!
     
-    //MARK: Navigation
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        sentMemes = (UIApplication.sharedApplication().delegate as! AppDelegate).memes
+        
         navigationItem.title = "Sent Memes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(createMemePressed(_:)))
         
